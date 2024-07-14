@@ -17,14 +17,24 @@ public class HomeController {
         welcomeLabel.setText("Welcome, " + username + "!");
     }
 
-    public void loadHome(Stage stage) throws IOException {
+    @FXML
+
+    private void loadHome(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ocp/demo1/home.fxml"));
-        loader.setController(this);
+        loader.setControllerFactory(c -> this); // Ensures the current instance is used
         Parent root = loader.load();
         stage.getScene().setRoot(root);
         stage.show();
     }
 
+
+    @FXML
+    private void loadConsommables(Stage stage) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ocp/demo1/consommables.fxml"));
+        Parent root = loader.load();
+        stage.getScene().setRoot(root);
+        stage.show();
+    }
 
     private void backLogin(Stage stage) {
         try {
@@ -49,6 +59,16 @@ public class HomeController {
         Stage stage = (Stage) welcomeLabel.getScene().getWindow(); // Get current stage
         try {
             loadHome(stage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleConsommables() {
+        Stage stage = (Stage) welcomeLabel.getScene().getWindow();
+        try {
+            loadConsommables(stage);
         } catch (IOException e) {
             e.printStackTrace();
         }

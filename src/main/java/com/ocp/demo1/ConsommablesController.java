@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class consommablesController {
+public class ConsommablesController {
 
     @FXML
     private TableView<?> consommablesTable;
@@ -19,7 +19,7 @@ public class consommablesController {
         Stage stage = (Stage) consommablesTable.getScene().getWindow(); // Use the TableView component
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ocp/demo1/home.fxml"));
-            loader.setController(new HomeController());
+            // Do not set the controller here since it is already set in the FXML
             Parent root = loader.load();
             stage.getScene().setRoot(root);
             stage.show();
@@ -33,7 +33,7 @@ public class consommablesController {
         Stage stage = (Stage) consommablesTable.getScene().getWindow(); // Use the TableView component
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ocp/demo1/login.fxml"));
-            loader.setController(new LoginController());
+            // Do not set the controller here since it is already set in the FXML
             Parent root = loader.load();
             stage.getScene().setRoot(root);
             stage.show();
