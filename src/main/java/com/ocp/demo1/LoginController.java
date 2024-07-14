@@ -39,16 +39,14 @@ public class LoginController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ocp/demo1/home.fxml"));
             Parent root = loader.load();
-            HomeController homeController = loader.getController();
-            homeController.setUser(username);
-
-            Stage stage = (Stage) usernameField.getScene().getWindow(); // Assumes usernameField is part of the current scene
+            Stage stage = (Stage) usernameField.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
 
 
