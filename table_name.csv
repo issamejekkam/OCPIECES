@@ -1,0 +1,13 @@
+code,reference,nom,nombre,description
+1,A1,arbre,100,"etat critique"
+2,A2,reducteur,10,"etat parfait"
+3,A3,Pompe,20,20Kg
+C4,A4,Valve,15,15KG
+C5,A5,Filter,30,30KG
+C6,A6,Gasket,45,45KG
+C7,A7,Bearing,25,25KG
+C8,A8,Motor,30,30KG
+C9,A9,Hose,20,20KG
+C10,A10,Bearing,25,25KG
+C11,A11,Motor,30,30KG
+C12,A12,Hose,20,20KG

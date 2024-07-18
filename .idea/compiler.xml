@@ -5,7 +5,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="demo1.main" options="" />
+      <module name="demo1.main" options="--add-exports java.desktop/sun.lwawt=com.ocp.demo1" />
     </option>
   </component>
 </project>

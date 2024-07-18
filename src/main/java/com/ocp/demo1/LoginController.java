@@ -28,7 +28,7 @@ public class LoginController {
         String password = passwordField.getText();
 
         if (validateLogin(username, password)) {
-            showAlert(AlertType.INFORMATION, "Login Successful", "Welcome " + username + "!");
+
             openHomePage(username);
         } else {
             showAlert(AlertType.ERROR, "Login Failed", "Invalid username or password.");

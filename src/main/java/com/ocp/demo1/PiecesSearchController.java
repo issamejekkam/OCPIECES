@@ -159,6 +159,19 @@ public class PiecesSearchController implements Initializable {
         }
     }
 
+    @FXML
+    private void handleAdd() {
+        Stage stage = (Stage) piecesTableView.getScene().getWindow(); // Use the TableView component
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ocp/demo1/formulaire.fxml"));
+            // Do not set the controller here since it is already set in the FXML
+            Parent root = loader.load();
+            stage.getScene().setRoot(root);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }
