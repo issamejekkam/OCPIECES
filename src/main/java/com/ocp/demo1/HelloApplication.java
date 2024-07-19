@@ -13,7 +13,7 @@ public class HelloApplication extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/com/ocp/demo1/login.fxml"));
 
         primaryStage.setTitle("Login Application");
-        primaryStage.setScene(new Scene(root,600,400));
+        primaryStage.setScene(new Scene(root,1000,700));
         primaryStage.show();
     }
 

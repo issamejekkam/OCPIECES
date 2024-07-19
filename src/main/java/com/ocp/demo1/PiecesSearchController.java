@@ -36,6 +36,8 @@ public class PiecesSearchController implements Initializable {
     @FXML
     private TableColumn<PiecesSearch,String> nameTableColumn;
     @FXML
+    private TableColumn<PiecesSearch,String> typeTableColumn;
+    @FXML
     private TableColumn<PiecesSearch,Integer> nombreTableColumn;
     @FXML
     private TableColumn<PiecesSearch,String> descriptionTableColumn;
@@ -55,7 +57,7 @@ public class PiecesSearchController implements Initializable {
     public  void  initialize(URL url, ResourceBundle rb) {
     Database connectNow= new Database();
     Connection connectDB = connectNow.connect();
-    String pieceView= "select code,reference,nom,nombre,description from pieces";
+    String pieceView= "select code,reference,nom,type,nombre,description from pieces";
     try{
         Statement statement = connectDB.createStatement();
         ResultSet resultSet = statement.executeQuery(pieceView);
@@ -63,16 +65,18 @@ public class PiecesSearchController implements Initializable {
             String QueryCode = resultSet.getString("code");
             String QueryReference = resultSet.getString("reference");
             String QueryName = resultSet.getString("nom");
+            String QueryType = resultSet.getString("type");
             Integer QueryNombre = resultSet.getInt("nombre");
             String QueryDescription = resultSet.getString("description");
 
-            PiecesSearchObservableList.add(new PiecesSearch(QueryCode,QueryReference,QueryName,QueryNombre,QueryDescription));
+            PiecesSearchObservableList.add(new PiecesSearch(QueryCode,QueryReference,QueryName,QueryNombre,QueryDescription,QueryType));
 
         }
 
         codeTableColumn.setCellValueFactory(new PropertyValueFactory<>("code"));
         referenceTableColumn.setCellValueFactory(new PropertyValueFactory<>("reference"));
         nameTableColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
+        typeTableColumn.setCellValueFactory(new PropertyValueFactory<>("Type"));
         nombreTableColumn.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         descriptionTableColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
 

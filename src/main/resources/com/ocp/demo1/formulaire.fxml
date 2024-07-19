@@ -4,38 +4,44 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ocp.demo1.formulaireController">
+<AnchorPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ocp.demo1.formulaireController">
    <children>
-      <TextField fx:id="Code" layoutX="54.0" layoutY="104.0" prefHeight="26.0" prefWidth="517.0" promptText="Code" />
-      <TextField fx:id="Reference" layoutX="54.0" layoutY="151.0" prefHeight="26.0" prefWidth="517.0" promptText="Reference" />
-      <TextField fx:id="Nom" layoutX="54.0" layoutY="200.0" prefHeight="26.0" prefWidth="517.0" promptText="Nom" />
-      <TextField fx:id="Description" layoutX="54.0" layoutY="247.0" prefHeight="26.0" prefWidth="517.0" promptText="Description" />
-      <Button fx:id="add" layoutX="259.0" layoutY="305.0" onAction="#formulaireAdd" mnemonicParsing="false" prefHeight="26.0" prefWidth="82.0" text="Add" />
-      <Label layoutX="231.0" layoutY="29.0" text="Ajouter une pièce">
+      <TextField fx:id="Code" alignment="CENTER" layoutX="243.0" layoutY="102.0" prefHeight="26.0" prefWidth="517.0" promptText="Code" />
+      <TextField fx:id="Reference" alignment="CENTER" layoutX="243.0" layoutY="153.0" prefHeight="26.0" prefWidth="517.0" promptText="Reference" />
+      <TextField fx:id="Nom" alignment="CENTER" layoutX="243.0" layoutY="195.0" prefHeight="26.0" prefWidth="517.0" promptText="Nom" />
+      <TextField fx:id="Description" alignment="CENTER" layoutX="243.0" layoutY="281.0" prefHeight="62.0" prefWidth="517.0" promptText="Description" />
+      <Button fx:id="add" alignment="CENTER" layoutX="452.0" layoutY="387.0" mnemonicParsing="false" onAction="#formulaireAdd" prefHeight="26.0" prefWidth="82.0" text="Add" />
+      <Label alignment="CENTER" layoutX="424.0" layoutY="28.0" text="Ajouter une pièce">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
       </Label>
-      <MenuBar accessibleRole="MENU" prefHeight="28.0" prefWidth="600.0">
+      <MenuBar accessibleRole="MENU" prefHeight="28.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <menus>
             <Menu mnemonicParsing="false" text="Home">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#handleHome" text="Reload" />
                </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Pièces">
+            <Menu mnemonicParsing="false" text="Articles à sortie défintive">
                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#handleConsommables" text="Magasin consommable" />
-                  <MenuItem mnemonicParsing="false" text="Magasin non-consommable" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleConsommables" text="Articles consommables" />
+                  <MenuItem mnemonicParsing="false" text="pièces de rechange" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Articless à sortie provisoire">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="outillages collectifs" />
+                  <MenuItem mnemonicParsing="false" text="outils de coupe" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Historique" />
-            <Menu mnemonicParsing="false" text="About" />
             <Menu mnemonicParsing="false" text="Options">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#handleLogout" text="Log out" />
@@ -44,5 +50,10 @@
          </menus>
       </MenuBar>
       <Label fx:id="welcomeLabel" alignment="CENTER" layoutX="-7.0" layoutY="58.0" text="Let's look for it!" textAlignment="CENTER" AnchorPane.leftAnchor="-7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="58.0" />
+      <MenuButton fx:id="Type" layoutX="242.0" layoutY="238.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="518.0" text="Type">
+         <items>
+
+         </items>
+      </MenuButton>
    </children>
 </AnchorPane>

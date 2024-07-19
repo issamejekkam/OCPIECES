@@ -6,30 +6,55 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
-
-import java.awt.*;
-import java.io.IOException;
 import javafx.scene.control.TextField;
+
+import java.io.IOException;
 import java.sql.*;
-
-
+import java.util.concurrent.atomic.AtomicReference;
 
 public class formulaireController {
     @FXML
     private Label welcomeLabel;
-    @FXML private TextField Code;
-    @FXML private TextField Reference;
-    @FXML private TextField Nom;
-    @FXML private TextField Description;
+    @FXML
+    private TextField Code;
+    @FXML
+    private TextField Reference;
+    @FXML
+    private TextField Nom;
+    @FXML
+    private MenuButton Type;
+    @FXML
+    private TextField Description;
 
+    private AtomicReference<String> selectedType = new AtomicReference<>("");
+
+    @FXML
+    public void initialize() {
+        // Initialize the MenuButton items
+        MenuItem item1 = new MenuItem("Article Consommable");
+        MenuItem item2 = new MenuItem("pièce de rechange");
+        MenuItem item3 = new MenuItem("outillage collectif");
+        MenuItem item4 = new MenuItem("outil de coupe");
+
+        Type.getItems().addAll(item1, item2, item3, item4);
+
+        // Adding event handlers to update the selectedType when an item is selected
+        for (MenuItem item : Type.getItems()) {
+            item.setOnAction(event -> {
+                selectedType.set(item.getText());
+                Type.setText(selectedType.get()); // Update the MenuButton text to show the selected item
+            });
+        }
+    }
 
     public void setUser(String username) {
         welcomeLabel.setText("Welcome, " + username + "!");
     }
 
     @FXML
-
     private void loadHome(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ocp/demo1/home.fxml"));
         loader.setControllerFactory(c -> this); // Ensures the current instance is used
@@ -38,7 +63,6 @@ public class formulaireController {
         stage.show();
     }
 
-
     @FXML
     private void loadConsommables(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ocp/demo1/consommables.fxml"));
@@ -46,7 +70,6 @@ public class formulaireController {
         stage.getScene().setRoot(root);
         stage.show();
     }
-
 
     private void backLogin(Stage stage) {
         try {
@@ -85,10 +108,11 @@ public class formulaireController {
             e.printStackTrace();
         }
     }
-@FXML
+
+    @FXML
     public void formulaireAdd() {
         String checkSql = "SELECT nombre FROM pieces WHERE code = ? AND reference = ?";
-        String insertSql = "INSERT INTO pieces (code, reference, nom, description, nombre) VALUES (?, ?, ?, ?, 1)";
+        String insertSql = "INSERT INTO pieces (code, reference, nom, type, description, nombre) VALUES (?, ?, ?, ?, ?, 1)";
         String updateSql = "UPDATE pieces SET nombre = nombre + 1 WHERE code = ? AND reference = ?";
 
         try (Connection conn = Database.connect()) {
@@ -96,6 +120,7 @@ public class formulaireController {
             try (PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
                 checkStmt.setString(1, Code.getText());
                 checkStmt.setString(2, Reference.getText());
+
                 ResultSet rs = checkStmt.executeQuery();
                 if (rs.next()) {
                     // If exists, update the existing record
@@ -111,7 +136,8 @@ public class formulaireController {
                         insertStmt.setString(1, Code.getText());
                         insertStmt.setString(2, Reference.getText());
                         insertStmt.setString(3, Nom.getText());
-                        insertStmt.setString(4, Description.getText());
+                        insertStmt.setString(4, selectedType.get());
+                        insertStmt.setString(5, Description.getText());
                         insertStmt.executeUpdate();
                         showAlert(Alert.AlertType.CONFIRMATION, "Added", "Confirmer l'ajout de la pièce");
                     }
@@ -121,6 +147,7 @@ public class formulaireController {
             Code.setText("");
             Reference.setText("");
             Nom.setText("");
+            Type.setText("Type"); // Reset MenuButton to default text
             Description.setText("");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -135,5 +162,4 @@ public class formulaireController {
         alert.setContentText(content);
         alert.showAndWait();
     }
-
 }

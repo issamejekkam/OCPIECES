@@ -5,10 +5,12 @@ public class PiecesSearch {
     String nom;
     Integer nombre;
     String description;
+    String type;
 
-    public PiecesSearch(String code, String reference, String nom, Integer nombre, String description) {
+    public PiecesSearch(String code, String reference, String nom, Integer nombre, String description, String type) {
         this.code = code;
         this.reference = reference; // Ensure parameter names match field names
+        this.type=type;
         this.nom = nom;
         this.nombre = nombre;
         this.description = description;
@@ -25,6 +27,9 @@ public class PiecesSearch {
 
     public String getNom() { // Must match the name used in PropertyValueFactory
         return nom;
+    }
+    public String getType(){
+        return type;
     }
 
     public Integer getNombre() {
@@ -45,6 +50,9 @@ public class PiecesSearch {
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+    public void setType(String type) {
+        this.type = type;
     }
 
     public void setNombre(Integer nombre) {
