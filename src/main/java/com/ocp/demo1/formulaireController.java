@@ -165,8 +165,9 @@ public class formulaireController {
     public void formulaireAdd() {
         String checkSql = "SELECT nombre FROM pieces WHERE code = ? AND reference = ?";
         String insertSql = "INSERT INTO pieces (code, reference, nom, type, description, nombre,unité,emplacement) VALUES (?, ?, ?, ?, ?, 1,?,?)";
+        String insertPieceQuery = "INSERT INTO piece (code, numero, dae) VALUES (?, ?, ?)";
         String updateSql = "UPDATE pieces SET nombre = nombre + 1 WHERE code = ? AND reference = ?";
-
+        String checkNumeroQuery = "SELECT MAX(numero) FROM piece";
         try (Connection conn = Database.connect()) {
             // First, check if the item already exists
             try (PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
@@ -190,10 +191,25 @@ public class formulaireController {
                         insertStmt.setString(5, Description.getText());
                         insertStmt.setString(6, Unity.getText());
                         insertStmt.setString(7, Emplacement.getText());
+                        int newNumero = 1;  // Default to 1 if table is empty
+                        try (Statement stmt = conn.createStatement();
+                             ResultSet rs1 = stmt.executeQuery(checkNumeroQuery)) {
+                            if (rs1.next()) {
+                                newNumero = rs1.getInt(1) + 1;  // Increment the highest 'numero' found
+                            }
+                        }
 
+                        // Insert new record into 'piece'
+                        try (PreparedStatement preparedStatement1 = conn.prepareStatement(insertPieceQuery)) {
+                            preparedStatement1.setString(1, Code.getText());
+                            preparedStatement1.setInt(2, newNumero);
+                            preparedStatement1.setDate(3, new java.sql.Date(System.currentTimeMillis()));
+                            preparedStatement1.executeUpdate();
+                        }
                         insertStmt.executeUpdate();
                         showAlert(Alert.AlertType.CONFIRMATION, "Added", "Confirmer l'ajout de la pièce");
                     }
+
                 }
             }
             // Clear fields
