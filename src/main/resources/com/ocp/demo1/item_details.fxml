@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ocp.demo1.ItemDetailsController">
+    <padding>
+        <Insets bottom="200" left="200" right="20" top="20" />
+    </padding>
+   <AnchorPane prefHeight="200.0" prefWidth="200.0">
+      <children>
+         <Label layoutX="315.0" prefHeight="44.0" prefWidth="272.0" text="Options">
+            <font>
+               <Font name="System Bold" size="36.0" />
+            </font>
+         </Label>
+      </children>
+   </AnchorPane>
+   <AnchorPane prefHeight="200.0" prefWidth="200.0">
+      <children>
+         <GridPane hgap="10" layoutX="94.0" layoutY="27.0" prefHeight="223.0" prefWidth="436.0" vgap="10">
+            <columnConstraints>
+               <ColumnConstraints />
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+            </rowConstraints>
+            <children>
+               <Label text="Code:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+               <Label fx:id="codeLabel" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+               <Label prefWidth="235.0" text="Reference:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+               <Label fx:id="referenceLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+               <Label text="Name:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+               <Label fx:id="nameLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+               <Label text="Type:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+               <Label fx:id="typeLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+               <Label text="Unity:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+               <Label fx:id="unityLabel" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+               <Label text="Emplacement:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+               <Label fx:id="emplacementLabel" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+               <Label text="Quantity:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+               <Label fx:id="quantityLabel" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+               <Label text="Description:" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+               <Label fx:id="descriptionLabel" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            </children>
+         </GridPane>
+      </children>
+   </AnchorPane>
+   <AnchorPane prefHeight="200.0" prefWidth="200.0">
+      <children>
+         <TableView layoutX="-177.0" layoutY="82.0" prefHeight="448.0" prefWidth="1109.0">
+            <columns>
+               <TableColumn prefWidth="75.0" text="Numéro" />
+               <TableColumn prefWidth="133.0" text="Date d'entrée" />
+               <TableColumn prefWidth="144.0" text="Date de sortie" />
+               <TableColumn prefWidth="176.0" text="date de controle périodique" />
+               <TableColumn prefWidth="212.0" text="date de futur controle " />
+               <TableColumn prefWidth="226.0" text="chargé du controle" />
+               <TableColumn prefWidth="142.0" text="Décision du réforme" />
+            </columns>
+         </TableView>
+      </children>
+   </AnchorPane>
+</VBox>

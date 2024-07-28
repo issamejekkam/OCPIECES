@@ -15,8 +15,8 @@
       <TextField fx:id="Code" alignment="CENTER" layoutX="243.0" layoutY="102.0" prefHeight="26.0" prefWidth="517.0" promptText="Code" />
       <TextField fx:id="Reference" alignment="CENTER" layoutX="243.0" layoutY="153.0" prefHeight="26.0" prefWidth="517.0" promptText="Reference" />
       <TextField fx:id="Nom" alignment="CENTER" layoutX="243.0" layoutY="195.0" prefHeight="26.0" prefWidth="517.0" promptText="Nom" />
-      <TextField fx:id="Description" alignment="CENTER" layoutX="243.0" layoutY="281.0" prefHeight="62.0" prefWidth="517.0" promptText="Description" />
-      <Button fx:id="add" alignment="CENTER" layoutX="452.0" layoutY="387.0" mnemonicParsing="false" onAction="#formulaireAdd" prefHeight="26.0" prefWidth="82.0" text="Add" />
+      <TextField fx:id="Description" alignment="CENTER" layoutX="243.0" layoutY="363.0" prefHeight="62.0" prefWidth="517.0" promptText="Description" />
+      <Button fx:id="add" alignment="CENTER" layoutX="467.0" layoutY="470.0" mnemonicParsing="false" onAction="#formulaireAdd" prefHeight="26.0" prefWidth="82.0" text="Add" />
       <Label alignment="CENTER" layoutX="424.0" layoutY="28.0" text="Ajouter une pièce">
          <font>
             <Font name="System Bold" size="19.0" />
@@ -32,13 +32,13 @@
             <Menu mnemonicParsing="false" text="Articles à sortie défintive">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#handleConsommables" text="Articles consommables" />
-                  <MenuItem mnemonicParsing="false" text="pièces de rechange" />
+                  <MenuItem mnemonicParsing="false" onAction="#handlerechange" text="pièces de rechange" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Articless à sortie provisoire">
                <items>
-                  <MenuItem mnemonicParsing="false" text="outillages collectifs" />
-                  <MenuItem mnemonicParsing="false" text="outils de coupe" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleCollectif" text="outillages collectifs" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleCoupe" text="outils de coupe" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Historique" />
@@ -49,11 +49,13 @@
             </Menu>
          </menus>
       </MenuBar>
-      <Label fx:id="welcomeLabel" alignment="CENTER" layoutX="-7.0" layoutY="58.0" text="Let's look for it!" textAlignment="CENTER" AnchorPane.leftAnchor="-7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="58.0" />
+      <Label fx:id="welcomeLabel" alignment="CENTER" layoutX="-7.0" layoutY="58.0" text="..." textAlignment="CENTER" AnchorPane.leftAnchor="-7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="58.0" />
       <MenuButton fx:id="Type" layoutX="242.0" layoutY="238.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="518.0" text="Type">
          <items>
 
          </items>
       </MenuButton>
+      <TextField fx:id="Unity" alignment="CENTER" layoutX="242.0" layoutY="276.0" prefHeight="26.0" prefWidth="517.0" promptText="unité" />
+      <TextField fx:id="Emplacement" alignment="CENTER" layoutX="243.0" layoutY="316.0" prefHeight="26.0" prefWidth="517.0" promptText="Emplacement" />
    </children>
 </AnchorPane>

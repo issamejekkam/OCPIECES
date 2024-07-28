@@ -35,8 +35,47 @@ public class HomeController {
         stage.getScene().setRoot(root);
         stage.show();
     }
+    @FXML
+    private void loadCoupe(Stage stage) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ocp/demo1/outilsCoupe.fxml"));
+        Parent root = loader.load();
+        stage.getScene().setRoot(root);
+        stage.show();
+    }
 
 
+    @FXML
+    private void loadCollectif(Stage stage) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ocp/demo1/outillagesCollectifs.fxml"));
+        Parent root = loader.load();
+        stage.getScene().setRoot(root);
+        stage.show();
+    }
+    @FXML
+    private void handleCollectif() {
+        Stage stage = (Stage) welcomeLabel.getScene().getWindow();
+        try {
+            loadCollectif(stage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void loadrechange(Stage stage) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ocp/demo1/piecesRechange.fxml"));
+        Parent root = loader.load();
+        stage.getScene().setRoot(root);
+        stage.show();
+    }
+    @FXML
+    private void handlerechange() {
+        Stage stage = (Stage) welcomeLabel.getScene().getWindow();
+        try {
+            loadrechange(stage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     private void backLogin(Stage stage) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ocp/demo1/login.fxml"));
@@ -74,4 +113,14 @@ public class HomeController {
             e.printStackTrace();
         }
     }
+    @FXML
+    private void handleCoupe() {
+        Stage stage = (Stage) welcomeLabel.getScene().getWindow();
+        try {
+            loadCoupe(stage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -29,7 +29,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class PiecesSearchController implements Initializable {
+public class piecesRechange implements Initializable {
 
     @FXML
     private TableView<PiecesSearch> piecesTableView;
@@ -61,110 +61,110 @@ public class PiecesSearchController implements Initializable {
 
 
     ObservableList<PiecesSearch> PiecesSearchObservableList = FXCollections.observableArrayList();
+
     Database connectNow= new Database();
     Connection connectDB = connectNow.connect();
-
     public void setUser(String username) {
         welcomeLabel.setText("Welcome, " + username + "!");
     }
     @Override
     public  void  initialize(URL url, ResourceBundle rb) {
 
-    String pieceView= "select code,reference,nom,type,nombre,description,emplacement,unité from pieces where type='Article Consommable'";
-    try{
-        Statement statement = connectDB.createStatement();
-        ResultSet resultSet = statement.executeQuery(pieceView);
-        while (resultSet.next()){
-            String QueryCode = resultSet.getString("code");
-            String QueryReference = resultSet.getString("reference");
-            String QueryName = resultSet.getString("nom");
-            String QueryType = resultSet.getString("type");
-            String QueryEmplacement= resultSet.getString("emplacement");
-            String QueryUnity= resultSet.getString("unité");
-            Integer QueryNombre = resultSet.getInt("nombre");
-            String QueryDescription = resultSet.getString("description");
+        String pieceView= "select code,reference,nom,type,nombre,description,emplacement,unité from pieces where type='pièce de rechange'";
+        try{
+            Statement statement = connectDB.createStatement();
+            ResultSet resultSet = statement.executeQuery(pieceView);
+            while (resultSet.next()){
+                String QueryCode = resultSet.getString("code");
+                String QueryReference = resultSet.getString("reference");
+                String QueryName = resultSet.getString("nom");
+                String QueryType = resultSet.getString("type");
+                String QueryEmplacement= resultSet.getString("emplacement");
+                String QueryUnity= resultSet.getString("unité");
+                Integer QueryNombre = resultSet.getInt("nombre");
+                String QueryDescription = resultSet.getString("description");
 
-            PiecesSearchObservableList.add(new PiecesSearch(QueryCode,QueryReference,QueryName,QueryNombre,QueryDescription,QueryType,QueryEmplacement,QueryUnity));
+                PiecesSearchObservableList.add(new PiecesSearch(QueryCode,QueryReference,QueryName,QueryNombre,QueryDescription,QueryType,QueryEmplacement,QueryUnity));
+
+            }
+            MenuItem item1 = new MenuItem("code");
+            MenuItem item2 = new MenuItem("reference");
+            MenuItem item3 = new MenuItem("nom");
+            MenuItem item4 = new MenuItem("type");
+            MenuItem item8 = new MenuItem("unité");
+            MenuItem item7 = new MenuItem("emplacement");
+            MenuItem item5 = new MenuItem("quantité");
+            MenuItem item6 = new MenuItem("description");
+            menu.getItems().addAll(item1, item2, item3, item4,item5,item6,item7,item8);
+
+            // Adding event handlers to update the selectedType when an item is selected
+            for (MenuItem item : menu.getItems()) {
+                item.setOnAction(event -> {
+                    selectedType.set(item.getText());
+                    menu.setText(selectedType.get()); // Update the MenuButton text to show the selected item
+                });
+            }
+
+            codeTableColumn.setCellValueFactory(new PropertyValueFactory<>("code"));
+            referenceTableColumn.setCellValueFactory(new PropertyValueFactory<>("reference"));
+            nameTableColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
+            typeTableColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+            unityTableColumn.setCellValueFactory(new PropertyValueFactory<>("unité"));
+            emplacementTableColumn.setCellValueFactory(new PropertyValueFactory<>("emplacement"));
+            nombreTableColumn.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+            descriptionTableColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+
+            piecesTableView.setItems(PiecesSearchObservableList);
+            FilteredList<PiecesSearch> filteredData = new FilteredList<>(PiecesSearchObservableList, b -> true);
+
+            SearchField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredData.setPredicate(piece -> {
+                    if (newValue == null || newValue.isEmpty()) {
+                        return true; // If no filter is set, show all items.
+                    }
+
+                    String lowerCaseFilter = newValue.toLowerCase();
+
+                    // Check for null in getType and other fields as necessary.
+                    if ("code".equals(selectedType.get()) && piece.getCode() != null) {
+                        return piece.getCode().toLowerCase().contains(lowerCaseFilter);
+                    } else if ("reference".equals(selectedType.get()) && piece.getReference() != null) {
+                        return piece.getReference().toLowerCase().contains(lowerCaseFilter);
+                    } else if ("nom".equals(selectedType.get()) && piece.getNom() != null) {
+                        return piece.getNom().toLowerCase().contains(lowerCaseFilter);
+                    } else if ("type".equals(selectedType.get()) && piece.getType() != null) {
+                        return piece.getType().toLowerCase().contains(lowerCaseFilter);
+                    } else if ("nombre".equals(selectedType.get()) && piece.getNombre() != null) {
+                        return piece.getNombre().toString().contains(lowerCaseFilter);
+                    } else if ("description".equals(selectedType.get()) && piece.getDescription() != null) {
+                        return piece.getDescription().toLowerCase().contains(lowerCaseFilter);
+                    } else if ("unité".equals(selectedType.get()) && piece.getNombre() != null) {
+                        return piece.getUnité().toLowerCase().contains(lowerCaseFilter);
+                    }else if ("emplacement".equals(selectedType.get()) && piece.getNombre() != null) {
+                        return piece.getEmplacement().toLowerCase().contains(lowerCaseFilter);
+                    }
+                    return false; // Default case if none of the fields match the filter or are null.
+                });
+            });
+
+
+
+            // Wrap the FilteredList in a SortedList.
+            SortedList<PiecesSearch> sortedData = new SortedList<>(filteredData);
+
+            // Bind the SortedList comparator to the TableView comparator.
+            sortedData.comparatorProperty().bind(piecesTableView.comparatorProperty());
+
+            // Add sorted and filtered data to the table.
+            piecesTableView.setItems(sortedData);
+            setupContextMenu();
+
+
+        } catch (SQLException e){
+            Logger.getLogger(PiecesSearchController.class.getName()).log(Level.SEVERE,null,e);
+            e.printStackTrace();
 
         }
-        MenuItem item1 = new MenuItem("code");
-        MenuItem item2 = new MenuItem("reference");
-        MenuItem item3 = new MenuItem("nom");
-        MenuItem item4 = new MenuItem("type");
-        MenuItem item8 = new MenuItem("unité");
-        MenuItem item7 = new MenuItem("emplacement");
-        MenuItem item5 = new MenuItem("quantité");
-        MenuItem item6 = new MenuItem("description");
-        menu.getItems().addAll(item1, item2, item3, item4,item5,item6,item7,item8);
-
-        // Adding event handlers to update the selectedType when an item is selected
-        for (MenuItem item : menu.getItems()) {
-            item.setOnAction(event -> {
-                selectedType.set(item.getText());
-                menu.setText(selectedType.get()); // Update the MenuButton text to show the selected item
-            });
-        }
-
-        codeTableColumn.setCellValueFactory(new PropertyValueFactory<>("code"));
-        referenceTableColumn.setCellValueFactory(new PropertyValueFactory<>("reference"));
-        nameTableColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
-        typeTableColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
-        unityTableColumn.setCellValueFactory(new PropertyValueFactory<>("unité"));
-        emplacementTableColumn.setCellValueFactory(new PropertyValueFactory<>("emplacement"));
-        nombreTableColumn.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        descriptionTableColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-
-        piecesTableView.setItems(PiecesSearchObservableList);
-        FilteredList<PiecesSearch> filteredData = new FilteredList<>(PiecesSearchObservableList, b -> true);
-
-        SearchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredData.setPredicate(piece -> {
-                if (newValue == null || newValue.isEmpty()) {
-                    return true; // If no filter is set, show all items.
-                }
-
-                String lowerCaseFilter = newValue.toLowerCase();
-
-                // Check for null in getType and other fields as necessary.
-                if ("code".equals(selectedType.get()) && piece.getCode() != null) {
-                    return piece.getCode().toLowerCase().contains(lowerCaseFilter);
-                } else if ("reference".equals(selectedType.get()) && piece.getReference() != null) {
-                    return piece.getReference().toLowerCase().contains(lowerCaseFilter);
-                } else if ("nom".equals(selectedType.get()) && piece.getNom() != null) {
-                    return piece.getNom().toLowerCase().contains(lowerCaseFilter);
-                } else if ("type".equals(selectedType.get()) && piece.getType() != null) {
-                    return piece.getType().toLowerCase().contains(lowerCaseFilter);
-                } else if ("quantité".equals(selectedType.get()) && piece.getNombre() != null) {
-                    return piece.getNombre().toString().contains(lowerCaseFilter);
-                } else if ("description".equals(selectedType.get()) && piece.getDescription() != null) {
-                    return piece.getDescription().toLowerCase().contains(lowerCaseFilter);
-                } else if ("unité".equals(selectedType.get()) && piece.getNombre() != null) {
-                    return piece.getUnité().toLowerCase().contains(lowerCaseFilter);
-                }else if ("emplacement".equals(selectedType.get()) && piece.getNombre() != null) {
-                    return piece.getEmplacement().toLowerCase().contains(lowerCaseFilter);
-                }
-                return false; // Default case if none of the fields match the filter or are null.
-            });
-        });
-
-
-
-        // Wrap the FilteredList in a SortedList.
-        SortedList<PiecesSearch> sortedData = new SortedList<>(filteredData);
-
-        // Bind the SortedList comparator to the TableView comparator.
-        sortedData.comparatorProperty().bind(piecesTableView.comparatorProperty());
-
-        // Add sorted and filtered data to the table.
-        piecesTableView.setItems(sortedData);
-        setupContextMenu();
-
-
-    } catch (SQLException e){
-        Logger.getLogger(PiecesSearchController.class.getName()).log(Level.SEVERE,null,e);
-        e.printStackTrace();
-
-    }
 
     }
     @FXML
@@ -273,6 +273,7 @@ public class PiecesSearchController implements Initializable {
             e.printStackTrace();
         }
     }
+
 
     private void setupContextMenu() {
         piecesTableView.setRowFactory(tv -> {

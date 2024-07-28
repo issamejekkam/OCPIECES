@@ -18,13 +18,13 @@
                 <Menu mnemonicParsing="false" text="Articles à sortie défintive">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#handleConsommables" text="Articles consommables" />
-                        <MenuItem mnemonicParsing="false" text="pièces de rechange" />
+                        <MenuItem mnemonicParsing="false" onAction="#handlerechange" text="pièces de rechange" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Articless à sortie provisoire">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="outillages collectifs" />
-                        <MenuItem mnemonicParsing="false" text="outils de coupe" />
+                        <MenuItem mnemonicParsing="false" onAction="#handleCollectif" text="outillages collectifs" />
+                        <MenuItem mnemonicParsing="false" onAction="#handleCoupe" text="outils de coupe" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Historique" />

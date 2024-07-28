@@ -28,6 +28,10 @@ public class formulaireController {
     private MenuButton Type;
     @FXML
     private TextField Description;
+    @FXML
+    private TextField Unity;
+    @FXML
+    private TextField Emplacement;
 
     private AtomicReference<String> selectedType = new AtomicReference<>("");
 
@@ -108,25 +112,71 @@ public class formulaireController {
             e.printStackTrace();
         }
     }
+    @FXML
+    private void loadCoupe(Stage stage) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ocp/demo1/outilsCoupe.fxml"));
+        Parent root = loader.load();
+        stage.getScene().setRoot(root);
+        stage.show();
+    }
+    @FXML
+    private void handleCoupe() {
+        Stage stage = (Stage) welcomeLabel.getScene().getWindow();
+        try {
+            loadCoupe(stage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void loadCollectif(Stage stage) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ocp/demo1/outillagesCollectifs.fxml"));
+        Parent root = loader.load();
+        stage.getScene().setRoot(root);
+        stage.show();
+    }
+    @FXML
+    private void handleCollectif() {
+        Stage stage = (Stage) welcomeLabel.getScene().getWindow();
+        try {
+            loadCollectif(stage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void loadrechange(Stage stage) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ocp/demo1/piecesRechange.fxml"));
+        Parent root = loader.load();
+        stage.getScene().setRoot(root);
+        stage.show();
+    }
+    @FXML
+    private void handlerechange() {
+        Stage stage = (Stage) welcomeLabel.getScene().getWindow();
+        try {
+            loadrechange(stage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     public void formulaireAdd() {
         String checkSql = "SELECT nombre FROM pieces WHERE code = ? AND reference = ?";
-        String insertSql = "INSERT INTO pieces (code, reference, nom, type, description, nombre) VALUES (?, ?, ?, ?, ?, 1)";
+        String insertSql = "INSERT INTO pieces (code, reference, nom, type, description, nombre,unité,emplacement) VALUES (?, ?, ?, ?, ?, 1,?,?)";
         String updateSql = "UPDATE pieces SET nombre = nombre + 1 WHERE code = ? AND reference = ?";
 
         try (Connection conn = Database.connect()) {
             // First, check if the item already exists
             try (PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
                 checkStmt.setString(1, Code.getText());
-                checkStmt.setString(2, Reference.getText());
 
                 ResultSet rs = checkStmt.executeQuery();
                 if (rs.next()) {
                     // If exists, update the existing record
                     try (PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
                         updateStmt.setString(1, Code.getText());
-                        updateStmt.setString(2, Reference.getText());
                         updateStmt.executeUpdate();
                         showAlert(Alert.AlertType.INFORMATION, "Updated", "Quantité incrementée pour l'item existant");
                     }
@@ -138,6 +188,9 @@ public class formulaireController {
                         insertStmt.setString(3, Nom.getText());
                         insertStmt.setString(4, selectedType.get());
                         insertStmt.setString(5, Description.getText());
+                        insertStmt.setString(6, Unity.getText());
+                        insertStmt.setString(7, Emplacement.getText());
+
                         insertStmt.executeUpdate();
                         showAlert(Alert.AlertType.CONFIRMATION, "Added", "Confirmer l'ajout de la pièce");
                     }
@@ -149,6 +202,8 @@ public class formulaireController {
             Nom.setText("");
             Type.setText("Type"); // Reset MenuButton to default text
             Description.setText("");
+            Unity.setText("");
+            Emplacement.setText("");
         } catch (SQLException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Database Error", "Erreur lors de l'ajout/modification de la pièce: " + e.getMessage());
