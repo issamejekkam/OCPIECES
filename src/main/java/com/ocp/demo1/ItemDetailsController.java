@@ -21,7 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ItemDetailsController implements Initializable {
-    @FXML private Label codeLabel, nameLabel, referenceLabel, typeLabel, emplacementLabel, quantityLabel, descriptionLabel, unityLabel;
+    @FXML private Label codeLabel, nameLabel, referenceLabel, typeLabel, emplacementLabel, quantityLabel, descriptionLabel, unityLabel, disponibleLabel;
     @FXML private TableView<PieceOptions> pieceTableView;
     @FXML private TableColumn<PieceOptions, String> codeTableColumn, dcpTableColumn, chargéTableColumn, décisionTableColumn;
     @FXML private TableColumn<PieceOptions, Integer> numeroTableColumn;
@@ -76,7 +76,7 @@ public class ItemDetailsController implements Initializable {
                 PieceOptions selectedItem = row.getItem();
                 if (selectedItem != null) {
                     updateDateOfExit(selectedItem);
-
+                    refreshPage(selectedItem.getCode());
                 }
             });
             contextMenu.getItems().add(removeMenuItem);
@@ -91,7 +91,6 @@ public class ItemDetailsController implements Initializable {
             stmt.setDate(1, Date.valueOf(piece.getDas()));
             stmt.setString(2, piece.getNumero());
             stmt.executeUpdate();
-            loadData(piece.getCode());
         } catch (SQLException e) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error updating date of exit in database", e);
         }
@@ -113,6 +112,7 @@ public class ItemDetailsController implements Initializable {
 
         dialog.setResultConverter(dialogButton -> dialogButton.getButtonData() == ButtonBar.ButtonData.OK_DONE ? updatePieceOptions(data, grid) : null);
         dialog.showAndWait();
+        refreshPage(data.getCode());
     }
 
     private void setupDialogFields(GridPane grid, PieceOptions data) {
@@ -154,6 +154,7 @@ public class ItemDetailsController implements Initializable {
         }
         return pieceOptions;
     }
+
     private void loadData(String itemCode) {
         if (itemCode == null) return; // Guard against null codes
 
@@ -181,9 +182,27 @@ public class ItemDetailsController implements Initializable {
                 ));
             }
             pieceTableView.setItems(pieceOptionsObservableList);
+
+            // Update the available label with the count of items without DAS
+            int countWithoutDAS = countItemsWithoutDAS(itemCode);
+            disponibleLabel.setText("Disponible: " + countWithoutDAS);
         } catch (SQLException e) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error loading data from database", e);
         }
+    }
+
+    private int countItemsWithoutDAS(String itemCode) {
+        String countQuery = "SELECT COUNT(*) FROM piece WHERE code = ? AND das IS NULL";
+        try (PreparedStatement preparedStatement = connectDB.prepareStatement(countQuery)) {
+            preparedStatement.setString(1, itemCode);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error counting items without DAS", e);
+        }
+        return 0;
     }
 
     public void setCurrentItem(PiecesSearch item) {
@@ -196,7 +215,17 @@ public class ItemDetailsController implements Initializable {
             quantityLabel.setText(String.valueOf(item.getNombre()));
             descriptionLabel.setText(item.getDescription());
             unityLabel.setText(item.getUnité());
+            int countWithoutDAS = countItemsWithoutDAS(item.getCode());
+            disponibleLabel.setText("Disponible: " + countWithoutDAS);
             loadData(item.getCode());
+        }
+    }
+
+    private void refreshPage(String itemCode) {
+        if (itemCode != null) {
+            loadData(itemCode);
+            int countWithoutDAS = countItemsWithoutDAS(itemCode);
+            disponibleLabel.setText(String.valueOf(countWithoutDAS));
         }
     }
 }

@@ -17,9 +17,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import org.w3c.dom.Text;
 
-import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
@@ -45,7 +43,6 @@ public class piecesRechange implements Initializable {
     private TableColumn<PiecesSearch,String> unityTableColumn;
     @FXML
     private TableColumn<PiecesSearch,String> emplacementTableColumn;
-
     @FXML
     private TableColumn<PiecesSearch,Integer> nombreTableColumn;
     @FXML
@@ -58,44 +55,43 @@ public class piecesRechange implements Initializable {
     private MenuButton menu;
 
     private AtomicReference<String> selectedType = new AtomicReference<>("");
-
-
     ObservableList<PiecesSearch> PiecesSearchObservableList = FXCollections.observableArrayList();
-
-    Database connectNow= new Database();
+    Database connectNow = new Database();
     Connection connectDB = connectNow.connect();
+
     public void setUser(String username) {
         welcomeLabel.setText("Welcome, " + username + "!");
     }
-    @Override
-    public  void  initialize(URL url, ResourceBundle rb) {
 
-        String pieceView= "select code,reference,nom,type,nombre,description,emplacement,unité from pieces where type='pièce de rechange'";
-        try{
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        String pieceView = "select code,reference,nom,type,nombre,description,emplacement,unité from pieces where type='pièce de rechange'";
+        try {
             Statement statement = connectDB.createStatement();
             ResultSet resultSet = statement.executeQuery(pieceView);
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 String QueryCode = resultSet.getString("code");
                 String QueryReference = resultSet.getString("reference");
                 String QueryName = resultSet.getString("nom");
                 String QueryType = resultSet.getString("type");
-                String QueryEmplacement= resultSet.getString("emplacement");
-                String QueryUnity= resultSet.getString("unité");
+                String QueryEmplacement = resultSet.getString("emplacement");
+                String QueryUnity = resultSet.getString("unité");
                 Integer QueryNombre = resultSet.getInt("nombre");
                 String QueryDescription = resultSet.getString("description");
 
-                PiecesSearchObservableList.add(new PiecesSearch(QueryCode,QueryReference,QueryName,QueryNombre,QueryDescription,QueryType,QueryEmplacement,QueryUnity));
-
+                PiecesSearchObservableList.add(new PiecesSearch(QueryCode, QueryReference, QueryName, QueryNombre, QueryDescription, QueryType, QueryEmplacement, QueryUnity));
             }
+
             MenuItem item1 = new MenuItem("code");
             MenuItem item2 = new MenuItem("reference");
             MenuItem item3 = new MenuItem("nom");
             MenuItem item4 = new MenuItem("type");
-            MenuItem item8 = new MenuItem("unité");
-            MenuItem item7 = new MenuItem("emplacement");
             MenuItem item5 = new MenuItem("quantité");
             MenuItem item6 = new MenuItem("description");
-            menu.getItems().addAll(item1, item2, item3, item4,item5,item6,item7,item8);
+            MenuItem item7 = new MenuItem("emplacement");
+            MenuItem item8 = new MenuItem("unité");
+
+            menu.getItems().addAll(item1, item2, item3, item4, item5, item6, item7, item8);
 
             // Adding event handlers to update the selectedType when an item is selected
             for (MenuItem item : menu.getItems()) {
@@ -140,14 +136,12 @@ public class piecesRechange implements Initializable {
                         return piece.getDescription().toLowerCase().contains(lowerCaseFilter);
                     } else if ("unité".equals(selectedType.get()) && piece.getNombre() != null) {
                         return piece.getUnité().toLowerCase().contains(lowerCaseFilter);
-                    }else if ("emplacement".equals(selectedType.get()) && piece.getNombre() != null) {
+                    } else if ("emplacement".equals(selectedType.get()) && piece.getNombre() != null) {
                         return piece.getEmplacement().toLowerCase().contains(lowerCaseFilter);
                     }
                     return false; // Default case if none of the fields match the filter or are null.
                 });
             });
-
-
 
             // Wrap the FilteredList in a SortedList.
             SortedList<PiecesSearch> sortedData = new SortedList<>(filteredData);
@@ -159,14 +153,12 @@ public class piecesRechange implements Initializable {
             piecesTableView.setItems(sortedData);
             setupContextMenu();
 
-
-        } catch (SQLException e){
-            Logger.getLogger(PiecesSearchController.class.getName()).log(Level.SEVERE,null,e);
+        } catch (SQLException e) {
+            Logger.getLogger(PiecesSearchController.class.getName()).log(Level.SEVERE, null, e);
             e.printStackTrace();
-
         }
-
     }
+
     @FXML
     private void handleHome() {
         Stage stage = (Stage) piecesTableView.getScene().getWindow(); // Use the TableView component
@@ -194,6 +186,7 @@ public class piecesRechange implements Initializable {
             e.printStackTrace();
         }
     }
+
     @FXML
     private void loadConsommables(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ocp/demo1/consommables.fxml"));
@@ -201,6 +194,7 @@ public class piecesRechange implements Initializable {
         stage.getScene().setRoot(root);
         stage.show();
     }
+
     @FXML
     private void handleConsommables() {
         Stage stage = (Stage) welcomeLabel.getScene().getWindow();
@@ -210,6 +204,7 @@ public class piecesRechange implements Initializable {
             e.printStackTrace();
         }
     }
+
     @FXML
     private void loadCoupe(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ocp/demo1/outilsCoupe.fxml"));
@@ -217,6 +212,7 @@ public class piecesRechange implements Initializable {
         stage.getScene().setRoot(root);
         stage.show();
     }
+
     @FXML
     private void handleCoupe() {
         Stage stage = (Stage) welcomeLabel.getScene().getWindow();
@@ -248,6 +244,7 @@ public class piecesRechange implements Initializable {
         stage.getScene().setRoot(root);
         stage.show();
     }
+
     @FXML
     private void handleCollectif() {
         Stage stage = (Stage) welcomeLabel.getScene().getWindow();
@@ -257,6 +254,7 @@ public class piecesRechange implements Initializable {
             e.printStackTrace();
         }
     }
+
     @FXML
     private void loadrechange(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ocp/demo1/piecesRechange.fxml"));
@@ -264,6 +262,7 @@ public class piecesRechange implements Initializable {
         stage.getScene().setRoot(root);
         stage.show();
     }
+
     @FXML
     private void handlerechange() {
         Stage stage = (Stage) welcomeLabel.getScene().getWindow();
@@ -274,28 +273,27 @@ public class piecesRechange implements Initializable {
         }
     }
 
-
     private void setupContextMenu() {
         piecesTableView.setRowFactory(tv -> {
             TableRow<PiecesSearch> row = new TableRow<>();
             ContextMenu contextMenu = new ContextMenu();
             MenuItem addMenuItem = new MenuItem("Add");
-            MenuItem removeMenuItem = new MenuItem("Remove");
             MenuItem optionsMenuItem = new MenuItem("Options");
             MenuItem emplacementMenuItem = new MenuItem("Change Emplacement ");
 
             addMenuItem.setOnAction(event -> updateQuantity(row.getItem(), 1));
-            removeMenuItem.setOnAction(event -> updateQuantity(row.getItem(), -1));
+
             optionsMenuItem.setOnAction(event -> showItemDetails(row.getItem()));
             emplacementMenuItem.setOnAction(event -> changeEmplacement(row.getItem()));
-            contextMenu.getItems().addAll(addMenuItem, removeMenuItem, optionsMenuItem,emplacementMenuItem);
+            contextMenu.getItems().addAll(addMenuItem, optionsMenuItem, emplacementMenuItem);
             row.contextMenuProperty().bind(
                     Bindings.when(row.emptyProperty())
-                            .then((ContextMenu)null)
+                            .then((ContextMenu) null)
                             .otherwise(contextMenu));
             return row;
         });
     }
+
     private void changeEmplacement(PiecesSearch item) {
         if (item == null) return;
         TextInputDialog dialog = new TextInputDialog(item.getEmplacement());
@@ -324,21 +322,66 @@ public class piecesRechange implements Initializable {
     }
 
     private void updateQuantity(PiecesSearch item, int quantityChange) {
-        if (item != null && (item.getNombre() + quantityChange >= 0)) {
-            String updateQuery = "UPDATE pieces SET nombre = nombre + ? WHERE code = ?";
+        if (item == null || (item.getNombre() + quantityChange) < 0) {
+            return; // Exit if the item is null or the resulting quantity would be negative.
+        }
+
+        String updateQuery = "UPDATE pieces SET nombre = nombre + ? WHERE code = ?";
+        String insertPieceQuery = "INSERT INTO piece (code, numero, dae) VALUES (?, ?, ?)";
+        String checkNumeroQuery = "SELECT MAX(numero) FROM piece";  // To find the highest 'numero' used
+
+        try {
+            connectDB.setAutoCommit(false); // Start transaction
+
+            // Update pieces table
             try (PreparedStatement preparedStatement = connectDB.prepareStatement(updateQuery)) {
                 preparedStatement.setInt(1, quantityChange);
                 preparedStatement.setString(2, item.getCode());
                 preparedStatement.executeUpdate();
-                Platform.runLater(() -> {
-                    item.setNombre(item.getNombre() + quantityChange);
-                    piecesTableView.refresh();
-                });
-            } catch (SQLException e) {
-                Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error updating item quantity", e);
+            }
+
+            if (quantityChange == 1) {
+                // Determine the new 'numero' value
+                int newNumero = 1;  // Default to 1 if table is empty
+                try (Statement stmt = connectDB.createStatement();
+                     ResultSet rs = stmt.executeQuery(checkNumeroQuery)) {
+                    if (rs.next()) {
+                        newNumero = rs.getInt(1) + 1;  // Increment the highest 'numero' found
+                    }
+                }
+
+                // Insert new record into 'piece'
+                try (PreparedStatement preparedStatement1 = connectDB.prepareStatement(insertPieceQuery)) {
+                    preparedStatement1.setString(1, item.getCode());
+                    preparedStatement1.setInt(2, newNumero);
+                    preparedStatement1.setDate(3, new java.sql.Date(System.currentTimeMillis()));
+                    preparedStatement1.executeUpdate();
+                }
+            }
+
+            connectDB.commit(); // Commit transaction
+
+            Platform.runLater(() -> {
+                item.setNombre(item.getNombre() + quantityChange);
+                piecesTableView.refresh();
+            });
+
+        } catch (SQLException e) {
+            try {
+                connectDB.rollback(); // Roll back the transaction on error
+            } catch (SQLException ex) {
+                Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Failed to roll back the transaction", ex);
+            }
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error in updating item quantity or inserting new record", e);
+        } finally {
+            try {
+                connectDB.setAutoCommit(true); // Reset default transaction behavior
+            } catch (SQLException ex) {
+                Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Failed to reset auto-commit", ex);
             }
         }
     }
+
 
     private void showItemDetails(PiecesSearch item) {
         if (item == null) return;
@@ -355,8 +398,4 @@ public class piecesRechange implements Initializable {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error showing item details", e);
         }
     }
-
-
-
-
 }
