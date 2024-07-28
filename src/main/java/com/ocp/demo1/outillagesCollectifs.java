@@ -278,8 +278,8 @@ public class outillagesCollectifs implements Initializable {
             TableRow<PiecesSearch> row = new TableRow<>();
             ContextMenu contextMenu = new ContextMenu();
             MenuItem addMenuItem = new MenuItem("Add");
-            MenuItem optionsMenuItem = new MenuItem("Options");
 
+            MenuItem optionsMenuItem = new MenuItem("Options");
             MenuItem emplacementMenuItem = new MenuItem("Change Emplacement ");
 
             addMenuItem.setOnAction(event -> updateQuantity(row.getItem(), 1));
