@@ -278,15 +278,15 @@ public class outillagesCollectifs implements Initializable {
             TableRow<PiecesSearch> row = new TableRow<>();
             ContextMenu contextMenu = new ContextMenu();
             MenuItem addMenuItem = new MenuItem("Add");
-
+            MenuItem removeMenuItem = new MenuItem("Remove");
             MenuItem optionsMenuItem = new MenuItem("Options");
             MenuItem emplacementMenuItem = new MenuItem("Change Emplacement ");
 
             addMenuItem.setOnAction(event -> updateQuantity(row.getItem(), 1));
-
+            removeMenuItem.setOnAction(event -> updateQuantity(row.getItem(), -1));
             optionsMenuItem.setOnAction(event -> showItemDetails(row.getItem()));
             emplacementMenuItem.setOnAction(event -> changeEmplacement(row.getItem()));
-            contextMenu.getItems().addAll(addMenuItem, optionsMenuItem, emplacementMenuItem);
+            contextMenu.getItems().addAll(addMenuItem, removeMenuItem, optionsMenuItem, emplacementMenuItem);
             row.contextMenuProperty().bind(
                     Bindings.when(row.emptyProperty())
                             .then((ContextMenu) null)
