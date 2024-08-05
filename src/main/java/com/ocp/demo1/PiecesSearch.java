@@ -12,6 +12,7 @@ public class PiecesSearch {
     String description;
     String type;
 
+
     public PiecesSearch(String code, String reference, String nom, Integer nombre, String description, String type,String emplacement,String unité) {
         this.code = code;
         this.reference = reference; // Ensure parameter names match field names

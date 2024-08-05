@@ -11,10 +11,15 @@ public class PieceOptions {
     private LocalDate dateFuturControle;
     private String chargeControle;
     private String decisionReforme;
+    private LocalDate daeProvisoire;
+    private String chargeDaeProvisoire;
+    private  String ChargeDasProvisoire;
+    private LocalDate dasProvisoire;
+
 
     public PieceOptions(String code, String numero, LocalDate dae, LocalDate das,
                         String dateControlePeriodique, LocalDate dateFuturControle,
-                        String chargeControle, String decisionReforme) {
+                        String chargeControle, String decisionReforme,LocalDate daeProvisoire, String chargeDaeProvisoire,LocalDate dasProvisoire,String ChargeDasProvisoire) {
         this.code = code;
         this.numero = numero;
         this.dae = dae;
@@ -23,6 +28,10 @@ public class PieceOptions {
         this.dateFuturControle = dateFuturControle;
         this.chargeControle = chargeControle;
         this.decisionReforme = decisionReforme;
+        this.daeProvisoire = daeProvisoire;
+        this.chargeDaeProvisoire = chargeDaeProvisoire;
+        this.ChargeDasProvisoire = ChargeDasProvisoire;
+        this.dasProvisoire = dasProvisoire;
     }
 
     // Getters and setters
@@ -49,4 +58,34 @@ public class PieceOptions {
 
     public String getDecisionReforme() { return decisionReforme; }
     public void setDecisionReforme(String decisionReforme) { this.decisionReforme = decisionReforme; }
+
+    public LocalDate getDaeProvisoire() { return daeProvisoire; }
+
+    public void setDaeProvisoire(LocalDate daeProvisoire) {
+        this.daeProvisoire = daeProvisoire;
+    }
+
+    public String getChargeDaeProvisoire() {
+        return chargeDaeProvisoire;
+    }
+
+    public void setChargeDaeProvisoire(String chargeDaeProvisoire) {
+        this.chargeDaeProvisoire = chargeDaeProvisoire;
+    }
+
+    public String getChargeDasProvisoire() {
+        return ChargeDasProvisoire;
+    }
+
+    public void setChargeDasProvisoire(String chargeDasProvisoire) {
+        ChargeDasProvisoire = chargeDasProvisoire;
+    }
+
+    public LocalDate getDasProvisoire() {
+        return dasProvisoire;
+    }
+
+    public void setDasProvisoire(LocalDate dasProvisoire) {
+        this.dasProvisoire = dasProvisoire;
+    }
 }

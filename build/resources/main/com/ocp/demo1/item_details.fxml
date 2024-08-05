@@ -78,6 +78,7 @@
                <TableColumn fx:id="décisionTableColumn" prefWidth="202.0" text="Décision du réforme" />
                <TableColumn fx:id="editColumn" prefWidth="75.0" text="Edit"/>
 
+
             </columns>
          </TableView>
       </children>
