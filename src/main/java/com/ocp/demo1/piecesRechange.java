@@ -359,60 +359,67 @@ public class piecesRechange implements Initializable {
 
         String updateQuery = "UPDATE pieces SET nombre = nombre + ? WHERE code = ?";
         String insertPieceQuery = "INSERT INTO piece (code, numero, dae) VALUES (?, ?, ?)";
-        String checkNumeroQuery = "SELECT MAX(numero) FROM piece";  // To find the highest 'numero' used
+        String checkNumeroQuery = "SELECT MAX(numero) FROM piece"; // To find the highest 'numero' used
 
-        try {
-            connectDB.setAutoCommit(false); // Start transaction
+        while (quantityChange != 0) {
+            final int change = (quantityChange > 0 ? 1 : -1); // Define a final variable for the change
 
-            // Update pieces table
-            try (PreparedStatement preparedStatement = connectDB.prepareStatement(updateQuery)) {
-                preparedStatement.setInt(1, quantityChange);
-                preparedStatement.setString(2, item.getCode());
-                preparedStatement.executeUpdate();
-            }
+            try {
+                connectDB.setAutoCommit(false); // Start transaction
 
-            if (quantityChange == 1) {
-                // Determine the new 'numero' value
-                int newNumero = 1;  // Default to 1 if table is empty
-                try (Statement stmt = connectDB.createStatement();
-                     ResultSet rs = stmt.executeQuery(checkNumeroQuery)) {
-                    if (rs.next()) {
-                        newNumero = rs.getInt(1) + 1;  // Increment the highest 'numero' found
+                // Update pieces table
+                try (PreparedStatement preparedStatement = connectDB.prepareStatement(updateQuery)) {
+                    preparedStatement.setInt(1, change);
+                    preparedStatement.setString(2, item.getCode());
+                    preparedStatement.executeUpdate();
+                }
+
+                if (quantityChange > 0) {
+                    // Determine the new 'numero' value
+                    int newNumero = 1; // Default to 1 if table is empty
+                    try (Statement stmt = connectDB.createStatement();
+                         ResultSet rs = stmt.executeQuery(checkNumeroQuery)) {
+                        if (rs.next()) {
+                            newNumero = rs.getInt(1) + 1; // Increment the highest 'numero' found
+                        }
+                    }
+
+                    // Insert new record into 'piece'
+                    try (PreparedStatement preparedStatement1 = connectDB.prepareStatement(insertPieceQuery)) {
+                        preparedStatement1.setString(1, item.getCode());
+                        preparedStatement1.setInt(2, newNumero);
+                        preparedStatement1.setDate(3, new java.sql.Date(System.currentTimeMillis()));
+                        preparedStatement1.executeUpdate();
                     }
                 }
 
-                // Insert new record into 'piece'
-                try (PreparedStatement preparedStatement1 = connectDB.prepareStatement(insertPieceQuery)) {
-                    preparedStatement1.setString(1, item.getCode());
-                    preparedStatement1.setInt(2, newNumero);
-                    preparedStatement1.setDate(3, new java.sql.Date(System.currentTimeMillis()));
-                    preparedStatement1.executeUpdate();
+                connectDB.commit(); // Commit transaction
+
+                // Update the item in the TableView on the JavaFX Application Thread
+                Platform.runLater(() -> {
+                    item.setNombre(item.getNombre() + change);
+                    piecesTableView.refresh();
+                });
+
+                quantityChange -= change; // Adjust quantityChange by 1 in the appropriate direction
+
+            } catch (SQLException e) {
+                try {
+                    connectDB.rollback(); // Roll back the transaction on error
+                } catch (SQLException ex) {
+                    Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Failed to roll back the transaction", ex);
                 }
-            }
-
-            connectDB.commit(); // Commit transaction
-
-            Platform.runLater(() -> {
-                item.setNombre(item.getNombre() + quantityChange);
-                piecesTableView.refresh();
-            });
-
-        } catch (SQLException e) {
-            try {
-                connectDB.rollback(); // Roll back the transaction on error
-            } catch (SQLException ex) {
-                Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Failed to roll back the transaction", ex);
-            }
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error in updating item quantity or inserting new record", e);
-        } finally {
-            try {
-                connectDB.setAutoCommit(true); // Reset default transaction behavior
-            } catch (SQLException ex) {
-                Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Failed to reset auto-commit", ex);
+                Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error in updating item quantity or inserting new record", e);
+                break; // Exit the loop on error
+            } finally {
+                try {
+                    connectDB.setAutoCommit(true); // Reset default transaction behavior
+                } catch (SQLException ex) {
+                    Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Failed to reset auto-commit", ex);
+                }
             }
         }
     }
-
 
     private void showItemDetails(PiecesSearch item) {
         if (item == null) return;

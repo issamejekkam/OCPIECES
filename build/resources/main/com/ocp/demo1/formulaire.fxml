@@ -41,7 +41,7 @@
                   <MenuItem mnemonicParsing="false" onAction="#handleCoupe" text="outils de coupe" />
                </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Historique" />
+
             <Menu mnemonicParsing="false" text="Options">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#handleLogout" text="Log out" />

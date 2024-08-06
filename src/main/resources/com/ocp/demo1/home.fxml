@@ -4,10 +4,14 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ocp.demo1.HomeController">
-    <children>
+    <VBox spacing="10" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <MenuBar accessibleRole="MENU" prefHeight="28.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <menus>
                 <Menu mnemonicParsing="false" text="Home">
@@ -27,7 +31,7 @@
                         <MenuItem mnemonicParsing="false" onAction="#handleCoupe" text="outils de coupe" />
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Historique" />
+
                 <Menu mnemonicParsing="false" text="Options">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#handleLogout" text="Log out" />
@@ -35,6 +39,29 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <Label fx:id="welcomeLabel" layoutX="10.0" layoutY="50.0" text="Welcome!" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="50.0" />
-    </children>
+      <AnchorPane prefHeight="0.0" prefWidth="1000.0">
+         <children>
+              <Label fx:id="welcomeLabel" alignment="CENTER" layoutX="422.0" style="-fx-font-size: 24px; -fx-padding: 10;" text="Welcome!" />
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="536.0" prefWidth="915.0">
+         <children>
+              <ImageView fitHeight="343.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                      <Image url="@../../../images/presentation.png" />
+                  </image>
+              </ImageView>
+              <ImageView fitHeight="234.0" fitWidth="1008.0" layoutY="334.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                      <Image url="@../../../images/Screenshot 2024-08-06 at 19.55.41.png" />
+                  </image>
+              </ImageView>
+         </children>
+      </AnchorPane>
+    </VBox>
+   <Label layoutY="668.0" prefHeight="41.0" prefWidth="1000.0" style="-fx-background-color: #7bbb4b;" text="                                                                                                          Contact me  : Email : jekkamissame@gmail.com / Number : +33668054827" textOverrun="CLIP">
+      <font>
+         <Font name="System Bold Italic" size="13.0" />
+      </font>
+   </Label>
 </AnchorPane>
