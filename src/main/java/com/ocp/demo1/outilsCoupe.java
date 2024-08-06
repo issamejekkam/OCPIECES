@@ -283,18 +283,48 @@ public class outilsCoupe implements Initializable {
             MenuItem optionsMenuItem = new MenuItem("Options");
             MenuItem emplacementMenuItem = new MenuItem("Change Emplacement ");
 
-            addMenuItem.setOnAction(event -> updateQuantity(row.getItem(), 1));
+            // Ajouter un dialogue pour choisir la quantité
+            addMenuItem.setOnAction(event -> {
+                TextInputDialog dialog = new TextInputDialog("1");
+                dialog.setTitle("Choose Quantity");
+                dialog.setHeaderText("Enter the quantity to add:");
+                dialog.setContentText("Quantity:");
+
+                Optional<String> result = dialog.showAndWait();
+                result.ifPresent(quantity -> {
+                    try {
+                        int qty = Integer.parseInt(quantity);
+                        if (qty > 0) {
+                            updateQuantity(row.getItem(), qty);
+                        } else {
+                            showAlert("Invalid Quantity", "Please enter a positive number.");
+                        }
+                    } catch (NumberFormatException e) {
+                        showAlert("Invalid Input", "Please enter a valid number.");
+                    }
+                });
+            });
 
             optionsMenuItem.setOnAction(event -> showItemDetails(row.getItem()));
             emplacementMenuItem.setOnAction(event -> changeEmplacement(row.getItem()));
             contextMenu.getItems().addAll(addMenuItem, optionsMenuItem, emplacementMenuItem);
             row.contextMenuProperty().bind(
                     Bindings.when(row.emptyProperty())
-                            .then((ContextMenu) null)
+                            .then((ContextMenu)null)
                             .otherwise(contextMenu));
             return row;
         });
     }
+
+    // Méthode pour afficher une alerte
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
 
     private void changeEmplacement(PiecesSearch item) {
         if (item == null) return;

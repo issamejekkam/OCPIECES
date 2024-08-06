@@ -250,19 +250,30 @@ public class ItemDetailsController implements Initializable {
     private void setupDialogFields(GridPane grid, PieceOptions data) {
         TextField chargeControleField = new TextField(data.getChargeControle());
         TextField dateControlePeriodiqueField = new TextField(data.getDateControlePeriodique());
-        TextField decisionReformeField = new TextField(data.getDecisionReforme());
+
+        // Utilisation de ComboBox pour la décision de réforme
+        ComboBox<String> decisionReformeComboBox = new ComboBox<>();
+        decisionReformeComboBox.getItems().addAll("positive", "negative");
+        decisionReformeComboBox.setValue(data.getDecisionReforme());  // Set initial value based on data
+
         DatePicker dateFuturControlePicker = new DatePicker(data.getDateFuturControle());
 
         grid.addRow(2, new Label("Charge de controle:"), chargeControleField);
         grid.addRow(3, new Label("Date Controle periodique:"), dateControlePeriodiqueField);
-        grid.addRow(4, new Label("Decision de reforme: "),        decisionReformeField);
+        grid.addRow(4, new Label("Decision de reforme: "), decisionReformeComboBox);
         grid.addRow(5, new Label("Date de futur controle:"), dateFuturControlePicker);
     }
+
+
+
 
     private PieceOptions updatePieceOptions(PieceOptions pieceOptions, GridPane grid) {
         pieceOptions.setChargeControle(((TextField) grid.getChildren().get(1)).getText());
         pieceOptions.setDateControlePeriodique(((TextField) grid.getChildren().get(3)).getText());
-        pieceOptions.setDecisionReforme(((TextField) grid.getChildren().get(5)).getText());
+
+        // Utilisation de ComboBox pour la décision de réforme
+        pieceOptions.setDecisionReforme(((ComboBox<String>) grid.getChildren().get(5)).getValue());
+
         pieceOptions.setDateFuturControle(((DatePicker) grid.getChildren().get(7)).getValue());
 
         try (PreparedStatement stmt = connectDB.prepareStatement(
@@ -278,6 +289,7 @@ public class ItemDetailsController implements Initializable {
         }
         return pieceOptions;
     }
+
 
     private void loadData(String itemCode) {
         if (itemCode == null) return;
